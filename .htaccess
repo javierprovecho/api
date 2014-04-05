@@ -1,0 +1,83 @@
+# Solo permitimos el acceso a la API con los metodos GET y POST
+<Limit GET POST>
+order deny,allow
+allow from all
+</Limit>
+
+# Codigos de error
+ErrorDocument 401 /error/401/
+ErrorDocument 404 /error/404/
+ErrorDocument 500 /error/500/
+
+RewriteEngine on
+
+# Para forzar por HTTPS el acceso a la API
+#RewriteCond %{SERVER_PORT} !443
+#RewriteRule (.*) https://api.alergant.es%{REQUEST_URI}
+
+# Redirijo las peticiones del dominio .com al .es
+RewriteCond %{HTTP_HOST} ^api.alergant.com
+RewriteRule ^ https://api.alergant.es%{REQUEST_URI} [L,R=301]
+
+# URLs amigables 
+RewriteBase /
+RewriteRule ^error/(.*)/$ index.php?app=error&id=$1 [L]
+RewriteRule ^error/(.*)$ index.php?app=error&id=$1 [L]
+
+# Login
+RewriteRule ^authcheck/$ index.php?app=authcheck
+RewriteRule ^authcheck$ authcheck/ [L]
+RewriteRule ^writetoken/$ index.php?app=writetoken
+RewriteRule ^writetoken$ writetoken/ [L]
+RewriteRule ^gettoken/$ index.php?app=gettoken
+RewriteRule ^gettoken$ gettoken/ [L]
+
+# Administrador
+RewriteRule ^listarusuarios/$ index.php?app=listarusuarios
+RewriteRule ^listarusuarios$ listarusuarios/ [L]
+RewriteRule ^datosusuario/$ index.php?app=datosusuario
+RewriteRule ^datosusuario$ datosusuario/ [L]
+RewriteRule ^updateusuario/$ index.php?app=updateusuario
+RewriteRule ^updateusuario$ updateusuario/ [L]
+
+RewriteRule ^listarestablecimientos/$ index.php?app=listarestablecimientos
+RewriteRule ^listarestablecimientos$ listarestablecimientos/ [L]
+RewriteRule ^datosestablecimiento/$ index.php?app=datosestablecimiento
+RewriteRule ^datosestablecimiento$ datosestablecimiento/ [L]
+RewriteRule ^updateestablecimiento/$ index.php?app=updateestablecimiento
+RewriteRule ^updateestablecimiento$ updateestablecimiento/ [L]
+
+RewriteRule ^estadosusuario/$ index.php?app=estadosusuario
+RewriteRule ^estadosusuario$ estadosusuario/ [L]
+RewriteRule ^alergias/$ index.php?app=alergias
+RewriteRule ^alergias$ alergias/ [L]
+
+# Usuarios
+RewriteRule ^misestablecimientos/$ index.php?app=misestablecimientos
+RewriteRule ^misestablecimientos$ misestablecimientos/ [L]
+
+RewriteRule ^userid/$ index.php?app=userid
+RewriteRule ^userid$ userid/ [L]
+
+RewriteRule ^registro/$ index.php?app=registro
+RewriteRule ^registro$ registro/ [L]
+RewriteRule ^preferencias/$ index.php?app=preferencias
+RewriteRule ^preferencias$ preferencias/ [L]
+RewriteRule ^coordenadas/$ index.php?app=coordenadas
+RewriteRule ^coordenadas$ coordenadas/ [L]
+RewriteRule ^buscar/$ index.php?app=buscar
+RewriteRule ^buscar$ buscar/ [L]
+RewriteRule ^recomendacion/$ index.php?app=recomendacion
+RewriteRule ^recomendacion$ recomendacion/ [L]
+RewriteRule ^detalles/$ index.php?app=detalles
+RewriteRule ^detalles$ detalles/ [L]
+RewriteRule ^votacion/$ index.php?app=votacion
+RewriteRule ^votacion$ votacion/ [L]
+
+# Pruebas de desarollo
+RewriteRule ^poblacion/$ index.php?app=poblacion
+RewriteRule ^poblacion$ poblacion/ [L]
+RewriteRule ^establecimientos/$ index.php?app=establecimientos
+RewriteRule ^establecimientos$ establecimientos/ [L]
+RewriteRule ^establecimientos_auth/$ index.php?app=establecimientos_auth
+RewriteRUle ^establecimientos_auth$ establecimientos_auth/ [L]
