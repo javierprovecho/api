@@ -109,6 +109,8 @@ switch ($app) {
       break;
    }
 
+mysql_close($db); // Esto cerrará la conexión a la bbdd después de cada petición a la API.
+
 exit;
 
 
