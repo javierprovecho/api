@@ -304,23 +304,29 @@ function auth() {
    }
 
    // Consulto a la BBDD
-   $consulta = "SELECT Usuario,Password FROM Usuarios";
-   $resultado = mysql_query($consulta, $db);
-   if(!$resultado) {
+   if(!$stmt = $db->prepare("SELECT Usuario,Password FROM Usuarios")){
+   	// algo fue mal
+   }
+   if(!$stmt->execute()){
       // Error en la consulta en la tabla de usuarios.
+      Header("Content-Type: application/json");
       $json = array('status' => 101);
       echo json_encode($json,JSON_UNESCAPED_UNICODE);
       exit;
    }
+   $datos_bbdd = array();
+   $stmt->bind_result($datos_bbdd['Usuario'], $datos_bbdd['Password']);
 
    // Tenemos resultados
-   while($datos_bbdd = mysql_fetch_array($resultado)) {
+   while($stmt->fetch()) {
       // Si el usuario y password coinciden, cambio variable y salgo del bucle.
       if(($_POST['username'] == $datos_bbdd['Usuario'])&&($_POST['password'] == $datos_bbdd['Password'])) {
          $login = true;
          break; // Salimos del bucle
       }
    }
+   
+   $stmt->close();
 
    if(!$login) {
       // Usuario y/o password incorrectos.
